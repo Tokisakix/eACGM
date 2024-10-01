@@ -1,4 +1,4 @@
-class BPFState:
+class BaseSamplerState:
     task:str
     pid:int
     cpu:int
@@ -15,21 +15,21 @@ class BPFState:
     
     def is_none(self) -> bool:
         return self.task is None
-
+    
     def __repr__(self) -> str:
-        info = f"{self.task} {self.pid} { self.cpu} {self.timestamp} {self.message}"
+        info = f"{self.task} {self.pid} {self.cpu} {self.timestamp} {self.message}"
         return info
 
-class BaseBPF:
+class BaseSampler:
     def __init__(self, name:str) -> None:
         self.name = name
         return
-
-    def attach_uprobe(self, exe_path:str, exe_sym:str, bpf_func:str) -> bool:
-        raise NotADirectoryError
-
-    def attach_uretprobe(self, exe_path:str, exe_sym:str, bpf_func:str) -> bool:
-        raise NotADirectoryError
     
-    def trace_ebpf(self) -> BPFState:
-        raise NotADirectoryError
+    def run(self) -> None:
+        raise NotImplementedError
+    
+    def sampler(self):
+        raise NotImplementedError
+
+    def close(self) -> None:
+        raise NotImplementedError

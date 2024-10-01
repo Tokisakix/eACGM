@@ -1,7 +1,7 @@
 from bcc import BPF
 from typing import List
 
-from eacgm.typing import BPFState, BaseBPF
+from .base import BPFState, BaseBPF
 
 class BccBPF(BaseBPF):
     def __init__(self, name:str, text:str, cflags:List=[]) -> None:
