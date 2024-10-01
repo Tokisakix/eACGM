@@ -30,7 +30,7 @@ class NVMLSampler(BaseSampler):
     def run(self) -> None:
         return
     
-    def sampler(self, time_stamp:float) -> List[NVMLSamplerState]:
+    def sample(self, time_stamp:float) -> List[NVMLSamplerState]:
         samplers = []
         for gpu_idx in range(self.deviceCount):
             gpu_handle = self.nvDevices[gpu_idx]

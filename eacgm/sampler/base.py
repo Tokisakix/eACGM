@@ -28,7 +28,7 @@ class BaseSampler:
     def run(self) -> None:
         raise NotImplementedError
     
-    def sampler(self):
+    def sample(self):
         raise NotImplementedError
 
     def close(self) -> None:
