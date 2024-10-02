@@ -31,5 +31,8 @@ class BaseBPF:
     def attach_uretprobe(self, exe_path:str, exe_sym:str, bpf_func:str) -> bool:
         raise NotADirectoryError
     
+    def cleanup(self) -> None:
+        raise NotADirectoryError
+    
     def trace_ebpf(self) -> BPFState:
         raise NotADirectoryError
