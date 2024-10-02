@@ -1,32 +1,35 @@
 import time
+import ctypes
 
 from eacgm.bpf import BccBPF
 from eacgm.sampler import eBPFSampler
 
 text = """
-int _ZN5torch8autogradL16THPVariable_geluEP7_objectS2_S2_Entry(struct pt_regs *ctx){
+#include <uapi/linux/ptrace.h>
+
+int PyObject_CallFunctionEntry(struct pt_regs *ctx){
     u64 ts = bpf_ktime_get_ns();
-    bpf_trace_printk("%ld start TorchGeLU\\n", ts);
+    bpf_trace_printk("%ld start PyObject_CallFunction\\n", ts);
     return 0;
 };
 
-int _ZN5torch8autogradL16THPVariable_geluEP7_objectS2_S2_Exit(struct pt_regs *ctx){
+int PyObject_CallFunctionExit(struct pt_regs *ctx){
     u64 ts = bpf_ktime_get_ns();
-    bpf_trace_printk("%ld end TorchGeLU\\n", ts);
+    bpf_trace_printk("%ld end PyObject_CallFunction\\n", ts);
     return 0;
 };
 """
 
-bpf = BccBPF("TorcheBPF", text, ["-w"])
+bpf = BccBPF("PythoneBPF", text, ["-w"])
 
 attach_config = [
     {
-        "name": "TorchSampler",
+        "name": "PythonSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/torch/./lib/libtorch_python.so",
+            "/home/msc-user/miniconda3/envs/py312-torch24-cu124/bin/python",
         ],
         "exe_sym": [
-            "_ZN5torch8autogradL16THPVariable_geluEP7_objectS2_S2_",
+            "PyObject_CallFunction",
         ]
     },
 ]

@@ -2,8 +2,8 @@ import time
 import torch
 from tqdm import tqdm
 
-epochs = 1024
-sleep  = 0.01
+epochs = 1
+sleep  = 1
 device = "cpu"
 
 transformer = torch.nn.Transformer(d_model=512, nhead=8, batch_first=True).to(device)
