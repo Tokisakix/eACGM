@@ -43,7 +43,7 @@ class eBPFSampler(BaseSampler):
         return
     
     def sample(self, time_stamp:float) -> List[eBPFSamplerState]:
-        samplers = []
+        samples = []
         start_time = time.perf_counter()
 
         flag = True
@@ -54,9 +54,9 @@ class eBPFSampler(BaseSampler):
             if state.is_none():
                 continue
             state = eBPFSamplerState.from_ebpfstate(state)
-            samplers.append(state)
+            samples.append(state)
 
-        return samplers
+        return samples
 
     def close(self) -> None:
         self.bpf.cleanup()

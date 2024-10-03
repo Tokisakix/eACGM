@@ -24,14 +24,13 @@ class NVMLSampler(BaseSampler):
         pynvml.nvmlInit()
         self.deviceCount:int = pynvml.nvmlDeviceGetCount()
         self.nvDevices:List  = [pynvml.nvmlDeviceGetHandleByIndex(idx) for idx in range(self.deviceCount)]
-        self.limitTime:float = -1.0
         return
     
     def run(self) -> None:
         return
     
     def sample(self, time_stamp:float) -> List[NVMLSamplerState]:
-        samplers = []
+        samples = []
         for gpu_idx in range(self.deviceCount):
             gpu_handle = self.nvDevices[gpu_idx]
             try:
@@ -48,10 +47,10 @@ class NVMLSampler(BaseSampler):
                     state.mem = process.memUtil
                     state.enc = process.encUtil
                     state.dec = process.decUtil
-                    samplers.append(state)
+                    samples.append(state)
             except pynvml.NVMLError as e:
                 pass
-        return samplers
+        return samples
 
     def close(self) -> None:
         pynvml.nvmlShutdown()
