@@ -1,3 +1,4 @@
+import os
 import time
 import torch
 import torch.distributed as dist
@@ -33,4 +34,6 @@ def main(rank, world_size):
 
 if __name__ == "__main__":
     world_size = 2
+    os.environ['MASTER_ADDR'] = 'localhost'
+    os.environ['MASTER_PORT'] = '10001'
     torch.multiprocessing.spawn(main, args=(world_size,), nprocs=world_size, join=True)

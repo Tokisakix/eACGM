@@ -17,11 +17,11 @@ int ncclAllReduceExit(struct pt_regs *ctx){
 };
 """
 
-bpf = BccBPF("CUDAeBPF", text, ["-w"])
+bpf = BccBPF("NCCLeBPF", text, ["-w"])
 
 attach_config = [
     {
-        "name": "CUDASampler",
+        "name": "NCCLSampler",
         "exe_path": [
             "/home/msc-user/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/nvidia/nccl/lib/libnccl.so.2",
         ],
