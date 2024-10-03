@@ -11,6 +11,7 @@ while True:
         for sample in sampler.sample(time_stamp=1):
             print(sample)
         time.sleep(2)
+        print("---")
     except KeyboardInterrupt:
         break
 
