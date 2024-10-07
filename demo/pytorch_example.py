@@ -24,6 +24,7 @@ def main(rank, world_size):
 
     for _ in tqdm(range(epochs)):
         outputs = transformer(inputs, inputs)
+        print(outputs.dtype)
 
         dist.all_reduce(outputs, op=dist.ReduceOp.SUM)
         

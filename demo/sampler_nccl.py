@@ -4,9 +4,15 @@ from eacgm.bpf import BccBPF
 from eacgm.sampler import eBPFSampler
 
 text = """
+#include <uapi/linux/ptrace.h>
+
 int ncclAllReduceEntry(struct pt_regs *ctx){
     u64 ts = bpf_ktime_get_ns();
-    bpf_trace_printk("%ld start ncclAllReduce\\n", ts);
+    u64 size_count = PT_REGS_PARM3(ctx);
+    u64 data_type  = PT_REGS_PARM4(ctx);
+    u64 reduce_op  = PT_REGS_PARM5(ctx);
+    bpf_trace_printk("%ld start ncclAllReduce %ld\\n", ts, size_count);
+    bpf_trace_printk("%ld %ld\\n", data_type, reduce_op);
     return 0;
 };
 
