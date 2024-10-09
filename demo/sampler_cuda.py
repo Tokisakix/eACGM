@@ -54,10 +54,16 @@ int cudaFreeExit(struct pt_regs *ctx){
 
 int cudaLaunchKernelEntry(struct pt_regs *ctx){
     u64 ts = bpf_ktime_get_ns();
-    struct dim3* gridDim = PT_REGS_PARM2(ctx);
-    struct dim3* blockDim = PT_REGS_PARM3(ctx);
+    u32 g_x = PT_REGS_PARM2(ctx) & 0xFFFF;
+    u32 g_y = PT_REGS_PARM2(ctx) >> 32;
+    u32 g_z = PT_REGS_PARM3(ctx) & 0xFFFF;
+    u32 b_x = PT_REGS_PARM4(ctx) & 0xFFFF;
+    u32 b_y = PT_REGS_PARM4(ctx) >> 32;
+    u32 b_z = PT_REGS_PARM5(ctx) & 0xFFFF;
+    // bpf_trace_printk("0 ----- cudaLaunchKernel %u %u %u\\n", g_x, g_y, g_z);
+    // bpf_trace_printk("0 ----- cudaLaunchKernel %u %u %u\\n", b_x, b_y, b_z);
     u64 shared_mem = PT_REGS_PARM5(ctx);
-    u64 stream_num = gridDim->x * gridDim->y * gridDim->z * blockDim->x * blockDim->y * blockDim->z;
+    u64 stream_num = g_x * g_y * g_z * b_x * b_y * b_z;
     bpf_trace_printk("%ld start cudaLaunchKernel %ld %ld\\n", ts, stream_num, shared_mem);
     return 0;
 };

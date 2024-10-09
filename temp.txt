@@ -1,3 +1,0 @@
-Unknown program b'cudaLaunchKernelEntry'
----
----

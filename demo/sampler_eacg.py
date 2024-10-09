@@ -4,9 +4,21 @@ from eacgm.bpf import BccBPF
 from eacgm.sampler import eBPFSampler, NVMLSampler, GPUSampler
 
 text = """
+#include <uapi/linux/ptrace.h>
+
 int cudaLaunchKernelEntry(struct pt_regs *ctx){
     u64 ts = bpf_ktime_get_ns();
-    bpf_trace_printk("%ld start cudaLaunchKernel\\n", ts);
+    u32 g_x = PT_REGS_PARM2(ctx) & 0xFFFF;
+    u32 g_y = PT_REGS_PARM2(ctx) >> 32;
+    u32 g_z = PT_REGS_PARM3(ctx) & 0xFFFF;
+    u32 b_x = PT_REGS_PARM4(ctx) & 0xFFFF;
+    u32 b_y = PT_REGS_PARM4(ctx) >> 32;
+    u32 b_z = PT_REGS_PARM5(ctx) & 0xFFFF;
+    // bpf_trace_printk("0 ----- cudaLaunchKernel %u %u %u\\n", g_x, g_y, g_z);
+    // bpf_trace_printk("0 ----- cudaLaunchKernel %u %u %u\\n", b_x, b_y, b_z);
+    u64 shared_mem = PT_REGS_PARM5(ctx);
+    u64 stream_num = g_x * g_y * g_z * b_x * b_y * b_z;
+    bpf_trace_printk("%ld start cudaLaunchKernel %ld %ld\\n", ts, stream_num, shared_mem);
     return 0;
 };
 
@@ -18,7 +30,11 @@ int cudaLaunchKernelExit(struct pt_regs *ctx){
 
 int ncclAllReduceEntry(struct pt_regs *ctx){
     u64 ts = bpf_ktime_get_ns();
-    bpf_trace_printk("%ld start ncclAllReduce\\n", ts);
+    u64 size_count = PT_REGS_PARM3(ctx);
+    u64 data_type  = PT_REGS_PARM4(ctx);
+    u64 reduce_op  = PT_REGS_PARM5(ctx);
+    bpf_trace_printk("%ld start ncclAllReduce %ld\\n", ts, size_count);
+    bpf_trace_printk("%ld ----- ncclAllReduce %ld %ld\\n", ts, data_type, reduce_op);
     return 0;
 };
 
@@ -60,6 +76,7 @@ attach_config = [
         "name": "CUDASampler",
         "exe_path": [
             "/home/msc-user/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/nvidia/cuda_runtime/lib/libcudart.so.12",
+            "./temp.out",
         ],
         "exe_sym": [
             "cudaLaunchKernel",
