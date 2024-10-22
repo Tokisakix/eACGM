@@ -26,8 +26,9 @@ def main(rank, world_size):
         outputs = transformer(inputs, inputs)
         print(outputs.dtype)
 
+        # NCCL AllReduce
         dist.all_reduce(outputs, op=dist.ReduceOp.SUM)
-        
+        # Torch GeLU
         outputs = torch.nn.functional.gelu(outputs)
         time.sleep(sleep)
 

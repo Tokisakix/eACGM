@@ -1,5 +1,5 @@
 import time
-from typing import List
+from typing import Dict, List
 
 from .base import BaseSamplerState, BaseSampler
 from eacgm.bpf import BPFState, BccBPF
@@ -17,6 +17,20 @@ class eBPFSamplerState(BaseSamplerState):
         state.timestamp = other.timestamp
         state.message   = other.message
         return state
+    
+    def collect(self) -> Dict:
+        event = self.message[1]
+        ph = "B" if self.message[0] == "start" else "E"
+        res = {
+            "name": event,
+            "pid": self.pid,
+            "tid": self.pid,
+            "cpu": self.cpu,
+            "ts": self.timestamp / 1_000,
+            "ph": ph,
+            "message": self.message[2:],
+        }
+        return res
     
     def __repr__(self) -> str:
         info = f"eBPFSamplerState {super().__repr__()}"

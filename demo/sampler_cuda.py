@@ -62,9 +62,8 @@ int cudaLaunchKernelEntry(struct pt_regs *ctx){
     u32 b_z = PT_REGS_PARM5(ctx) & 0xFFFF;
     // bpf_trace_printk("0 ----- cudaLaunchKernel %u %u %u\\n", g_x, g_y, g_z);
     // bpf_trace_printk("0 ----- cudaLaunchKernel %u %u %u\\n", b_x, b_y, b_z);
-    u64 shared_mem = PT_REGS_PARM5(ctx);
-    u64 stream_num = g_x * g_y * g_z * b_x * b_y * b_z;
-    bpf_trace_printk("%ld start cudaLaunchKernel %ld %ld\\n", ts, stream_num, shared_mem);
+    u32 stream_num = g_x * g_y * g_z * b_x * b_y * b_z;
+    bpf_trace_printk("%ld start cudaLaunchKernel %u\\n", ts, stream_num);
     return 0;
 };
 

@@ -26,9 +26,9 @@ class BccBPF(BaseBPF):
         state = BPFState()
         if task is not None:
             message = message.decode("utf-8")
-            state.task = task
+            state.task = task.decode("utf-8")
             state.pid  = int(pid)
             state.cpu  = int(cpu)
-            state.timestamp = int(message.split(" ")[0])
-            state.message   = message
+            state.timestamp = int(message.split("@")[0])
+            state.message   = message.split("@")[1:]
         return state
