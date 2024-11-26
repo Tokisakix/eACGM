@@ -58,17 +58,7 @@ int PyObject_CallFunctionExit(struct pt_regs *ctx){
     return 0;
 };
 
-int _ZN5torch8autogradL16THPVariable_geluEP7_objectS2_S2_Entry(struct pt_regs *ctx){
-    u64 ts = bpf_ktime_get_ns();
-    bpf_trace_printk("%ld@start@TorchGeLU\\n", ts);
-    return 0;
-};
 
-int _ZN5torch8autogradL16THPVariable_geluEP7_objectS2_S2_Exit(struct pt_regs *ctx){
-    u64 ts = bpf_ktime_get_ns();
-    bpf_trace_printk("%ld@end@TorchGeLU\\n", ts);
-    return 0;
-};
 """
 
 bpf = BccBPF("eACGSampler", text, ["-w"])

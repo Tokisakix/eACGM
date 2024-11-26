@@ -20,9 +20,20 @@ class eBPFSamplerState(BaseSamplerState):
     
     def collect(self) -> Dict:
         event = self.message[1]
+        if "cuda" in event:
+            cat = "cuda"
+        elif "Py" in event:
+            cat = "python"
+        elif "nccl" in event:
+            cat = "nccl"
+        elif "Torch" in event:
+            cat = "torch"
+        else:
+            cat = "other"
         ph = "B" if self.message[0] == "start" else "E"
         res = {
             "name": event,
+            "cat": cat,
             "pid": self.pid,
             "tid": self.pid,
             "cpu": self.cpu,
