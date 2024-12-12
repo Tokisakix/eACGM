@@ -14,3 +14,5 @@ nvml.json
 nccl.json
 ebpf.json
 eacg.json
+
+*.log
