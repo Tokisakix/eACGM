@@ -14,6 +14,7 @@ while True:
             # print(sample)
             states.append({
                 "ts": time.time_ns(),
+                "pid": sample.pid,
                 "gpu": sample.gpu,
                 "gpu_utl": sample.sm,
                 "mem": sample.mem,

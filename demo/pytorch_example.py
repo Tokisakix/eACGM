@@ -8,6 +8,7 @@ import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from tqdm import tqdm
 
+pid = None
 sample = []
 
 def init_process(rank, world_size):
@@ -52,7 +53,7 @@ def init_process(rank, world_size):
         f_code = frame.f_code
         if f_code.co_name not in func_fliter:
             return
-        temp_time = time.time_ns()
+        temp_time = time.clock_gettime_ns(time.CLOCK_MONOTONIC)
         func_name = f_code.co_name
         ph = None
         if event == "call":
@@ -61,10 +62,13 @@ def init_process(rank, world_size):
             ph = "E"
         if ph is None:
             return
+        global pid
         sample.append({
             "name": func_name,
             "cat": "python",
-            "ts": temp_time,
+            "pid": pid,
+            "tid": pid,
+            "ts": temp_time / 1_000,
             "ph": ph,
             "message": [],
         })
@@ -73,10 +77,10 @@ def init_process(rank, world_size):
     sys.setprofile(print_stack_traces)
     return
 
-def cleanup():
-    global sample
+def cleanup(rank):
+    global sample, pid
     dist.destroy_process_group()
-    json.dump(sample, open("python.json", "w", encoding="utf-8"), indent=4)
+    json.dump(sample, open(f"res/python_{pid}.json", "w", encoding="utf-8"), indent=4)
     return
 
 class GPTBlock(nn.Module):
@@ -141,6 +145,7 @@ def work(model, epochs, sleep, device):
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
     for _ in tqdm(range(epochs)):
+        # with torch.no_grad():
         logits = model(dummy_input)
         label  = torch.randn_like(logits).to(device)
 
@@ -153,9 +158,12 @@ def work(model, epochs, sleep, device):
     return
 
 def main(rank, world_size):
+    global pid
+    pid = os.getpid()
     init_process(rank, world_size)
     
     device = f"cuda:{rank}"
+    # device = f"cuda:1"
     torch.cuda.set_device(rank)
 
     vocab_size = 50257
@@ -168,12 +176,12 @@ def main(rank, world_size):
     model = GPT2(vocab_size, embed_dim, num_heads, num_layers, max_len, dropout).to(device)
     model = DDP(model, device_ids=[rank])
 
-    epochs = 128
-    sleep = 0
+    epochs = 1
+    sleep = 0.0
 
     work(model, epochs, sleep, device)
 
-    cleanup()
+    cleanup(rank)
 
 if __name__ == "__main__":
     world_size = 2
