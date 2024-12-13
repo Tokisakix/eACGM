@@ -232,7 +232,7 @@ attach_config = [
     {
         "name": "CUDASampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/eACGM/lib/python3.12/site-packages/nvidia/cuda_runtime/lib/libcudart.so.12",
+            "/home/txx/data/miniconda3/envs/eACGM/lib/python3.12/site-packages/nvidia/cuda_runtime/lib/libcudart.so.12",
         ],
         "exe_sym": [
             "cudaLaunchKernel",
@@ -241,7 +241,7 @@ attach_config = [
     {
         "name": "NCCLSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/eACGM/lib/python3.12/site-packages/nvidia/nccl/lib/libnccl.so.2",
+            "/home/txx/data/miniconda3/envs/eACGM/lib/python3.12/site-packages/nvidia/nccl/lib/libnccl.so.2",
         ],
         "exe_sym": [
             "ncclAllReduce",
@@ -250,7 +250,7 @@ attach_config = [
     {
         "name": "PythonSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/eACGM/bin/python",
+            "/home/txx/data/miniconda3/envs/eACGM/bin/python",
         ],
         "exe_sym": [
             # "PyObject_CallFunction",
@@ -259,7 +259,7 @@ attach_config = [
     {
         "name": "TorchSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/eACGM/lib/python3.12/site-packages/torch/lib/libtorch_python.so",
+            "/home/txx/data/miniconda3/envs/eACGM/lib/python3.12/site-packages/torch/lib/libtorch_python.so",
         ],
         "exe_sym": [
             torch_func_sym[func] for func in torch_func_sym
@@ -299,6 +299,4 @@ for python_log in os.listdir("res"):
         continue
     python_collector = json.load(open(os.path.join("res", python_log), "r", encoding="utf-8"))
     eacg_collector += python_collector
-for event in eacg_collector:
-    event["ts"] += start_time
 json.dump(eacg_collector, open("res/eacg.json", "w", encoding="utf-8"), indent=4)

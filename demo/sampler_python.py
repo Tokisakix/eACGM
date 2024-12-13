@@ -26,7 +26,7 @@ attach_config = [
     {
         "name": "PythonSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/py312-torch24-cu124/bin/python",
+            "/home/txx/data/miniconda3/envs/py312-torch24-cu124/bin/python",
         ],
         "exe_sym": [
             "PyObject_CallFunction",

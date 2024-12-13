@@ -82,7 +82,7 @@ attach_config = [
     {
         "name": "CUDASampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/eACGM/lib/python3.12/site-packages/nvidia/cuda_runtime/lib/libcudart.so.12",
+            "/home/txx/data/miniconda3/envs/eACGM/lib/python3.12/site-packages/nvidia/cuda_runtime/lib/libcudart.so.12",
         ],
         "exe_sym": [
             "cudaMalloc",

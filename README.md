@@ -11,17 +11,17 @@
 
 后续需要完善的功能：
 
-- [ ] 实现 eBPF 程序代码自动生成
-- [ ] 实现对捕获到的 CUDA Runtime 事件进行分析
-- [ ] 实现对捕获到的 NCCL GPU 通信库事件进行分析
-- [ ] 实现对捕获到的 Python 虚拟机的函数调用进行分析
-- [ ] 实现对捕获到的 Pytorch 的算子进行分析
+- [x] 实现 eBPF 程序代码自动生成
+- [x] 实现对捕获到的 CUDA Runtime 事件进行分析
+- [x] 实现对捕获到的 NCCL GPU 通信库事件进行分析
+- [x] 实现对捕获到的 Python 虚拟机的函数调用进行分析
+- [x] 实现对捕获到的 Pytorch 的算子进行分析
 
 闲的没事可以做的功能：
 
-- [ ] 捕获更多的 CUDA Runtime 事件
-- [ ] 捕获更多的 NCCL GPU 通信库事件
-- [ ] 捕获更多的 Pytorch 的算子
+- [x] 捕获更多的 CUDA Runtime 事件
+- [x] 捕获更多的 NCCL GPU 通信库事件
+- [x] 捕获更多的 Pytorch 的算子
 
 ## Sampler/采集器
 
@@ -110,7 +110,7 @@ attach_config = [
     {
         "name": "CUDASampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/nvidia/cuda_runtime/lib/libcudart.so.12",
+            "/home/txx/data/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/nvidia/cuda_runtime/lib/libcudart.so.12",
         ],
         "exe_sym": [
             "cudaLaunchKernel",
@@ -119,7 +119,7 @@ attach_config = [
     {
         "name": "NCCLSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/nvidia/nccl/lib/libnccl.so.2",
+            "/home/txx/data/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/nvidia/nccl/lib/libnccl.so.2",
         ],
         "exe_sym": [
             "ncclAllReduce",
@@ -128,7 +128,7 @@ attach_config = [
     {
         "name": "PythonSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/py312-torch24-cu124/bin/python",
+            "/home/txx/data/miniconda3/envs/py312-torch24-cu124/bin/python",
         ],
         "exe_sym": [
             "PyObject_CallFunction",
@@ -137,7 +137,7 @@ attach_config = [
     {
         "name": "TorchSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/torch/./lib/libtorch_python.so",
+            "/home/txx/data/miniconda3/envs/py312-torch24-cu124/lib/python3.12/site-packages/torch/./lib/libtorch_python.so",
         ],
         "exe_sym": [
             "_ZN5torch8autogradL16THPVariable_geluEP7_objectS2_S2_",

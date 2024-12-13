@@ -184,7 +184,7 @@ def main(rank, world_size):
     cleanup(rank)
 
 if __name__ == "__main__":
-    world_size = 2
+    world_size = 6
     os.environ['MASTER_ADDR'] = 'localhost'
     os.environ['MASTER_PORT'] = '10001'
     torch.multiprocessing.spawn(main, args=(world_size,), nprocs=world_size, join=True)

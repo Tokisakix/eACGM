@@ -57,7 +57,7 @@ attach_config = [
     {
         "name": "TorchSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/eACGM/lib/python3.12/site-packages/torch/./lib/libtorch_python.so",
+            "/home/txx/data/miniconda3/envs/eACGM/lib/python3.12/site-packages/torch/./lib/libtorch_python.so",
         ],
         "exe_sym": [
             "_ZN5torch8autogradL15THPVariable_addEP7_objectS2_S2_",

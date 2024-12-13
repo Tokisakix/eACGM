@@ -102,7 +102,7 @@ attach_config = [
     {
         "name": "NCCLSampler",
         "exe_path": [
-            "/home/msc-user/miniconda3/envs/eACGM/lib/python3.12/site-packages/nvidia/nccl/lib/libnccl.so.2",
+            "/home/txx/data/miniconda3/envs/eACGM/lib/python3.12/site-packages/nvidia/nccl/lib/libnccl.so.2",
         ],
         "exe_sym": [
             "ncclAllReduce",

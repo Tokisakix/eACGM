@@ -5,4 +5,4 @@ eacg:
 	sudo python3 demo/sampler_eacg.py
 	
 gpt-2:
-	/home/msc-user/miniconda3/envs/eACGM/bin/python demo/pytorch_example.py
+	/home/txx/data/miniconda3/envs/eACGM/bin/python demo/pytorch_example.py
